@@ -53,13 +53,6 @@ func main() {
 
 	houseFrequenceTab := houseDistribution(featureNames, matrix, nbPortions)
 
-	// for h, ft := range houseFrequenceTab {
-	// 	fmt.Println(h)
-	// 	for s, f := range ft {
-	// 		fmt.Println(s, f)
-	// 	}
-	// }
-
 	for _, subject := range featureNames {
 		plotHistogram(subject, houseFrequenceTab, nbPortions)
 	}
@@ -187,7 +180,7 @@ func plotHistogram(subject string, houseFrequenceTab map[string]map[string][]flo
 		panic(err)
 	}
 	p.Title.Text = subject
-	p.X.Label.Text = "Note"
+	p.X.Label.Text = "Tranche de notes"
 	p.Y.Label.Text = "Fréquence"
 
 	w := vg.Points(10)

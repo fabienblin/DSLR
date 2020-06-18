@@ -8,6 +8,7 @@ all:	dependencies
 
 clean:
 	rm -rf ./bin
+	rm -rf ./visual
 
 re : clean all
 
