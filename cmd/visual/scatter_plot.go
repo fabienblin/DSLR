@@ -20,7 +20,7 @@ func main() {
 	var fileName string
 
 	if len(os.Args) != 2 {
-		log.Fatal("Usage :\n\thistogram.exe <file.csv>")
+		log.Fatal("Usage :\n\tscatter_plot.exe <file.csv>")
 		os.Exit(1)
 	} else {
 		fileName = os.Args[1]
@@ -44,7 +44,7 @@ func main() {
 	// featureNames := data[0][6:]
 	matrix := fillMatrix(data)
 
-	for hous, m := range matrix {
+	for house, m := range matrix {
 		nrows, ncols := m.Dims()
 		points := make(plotter.XYs, nrows)
 		for i := 0; i < ncols-1; i++ {
@@ -57,26 +57,26 @@ func main() {
 				}
 			}
 		}
+		plotScatter(house, points)
 	}
-	/////////////////////////////////////////////////////
-	// Get some random points
 
-	scatterData := points
+}
 
+func plotScatter(plotname string, points plotter.XYer) {
 	// Create a new plot, set its title and
 	// axis labels.
 	p, err := plot.New()
 	if err != nil {
 		panic(err)
 	}
-	p.Title.Text = "Points Example"
+	p.Title.Text = plotname
 	p.X.Label.Text = "X"
 	p.Y.Label.Text = "Y"
 	// Draw a grid behind the data
 	p.Add(plotter.NewGrid())
 
 	// Make a scatter plotter and set its style.
-	s, err := plotter.NewScatter(scatterData)
+	s, err := plotter.NewScatter(points)
 	if err != nil {
 		panic(err)
 	}
@@ -86,9 +86,12 @@ func main() {
 	p.Legend.Add("scatter", s)
 
 	// Save the plot to a PNG file.
-	if err := p.Save(4*vg.Inch, 4*vg.Inch, "points.png"); err != nil {
+	folder := "./visual/scatter_plot/"
+	os.MkdirAll(folder, 0777)
+	if err := p.Save(4*vg.Inch, 4*vg.Inch, folder+plotname+".png"); err != nil {
 		panic(err)
 	}
+
 }
 
 func randomPoints(n int) plotter.XYs {
